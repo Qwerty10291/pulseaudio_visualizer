@@ -1,0 +1,16 @@
+//go:build ignore
+package main
+
+
+var Size vec2
+
+func hsv2rgb(c vec3) vec3 {
+	K := vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0)
+    p := abs(fract(c.xxx + K.xyz) * 6.0 - K.www)
+    return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y)
+}
+
+func Fragment(pos vec4, texCoord vec2, color vec4) vec4 {
+    normY := pos.y / Size.y
+	return vec4(hsv2rgb(vec3(1 - normY + 0.09, 0.8, 1)), 1)	
+}
